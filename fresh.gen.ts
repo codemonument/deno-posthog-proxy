@@ -4,7 +4,7 @@
 
 import * as $_path_ from "./routes/[...path].tsx";
 import * as $static_path_ from "./routes/static/[...path].tsx";
-import * as $Counter from "./islands/Counter.tsx";
+
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -12,9 +12,7 @@ const manifest = {
     "./routes/[...path].tsx": $_path_,
     "./routes/static/[...path].tsx": $static_path_,
   },
-  islands: {
-    "./islands/Counter.tsx": $Counter,
-  },
+  islands: {},
   baseUrl: import.meta.url,
 } satisfies Manifest;
 
