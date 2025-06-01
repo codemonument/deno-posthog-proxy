@@ -1,16 +1,9 @@
-# Fresh project
+# Deno Posthog Reverse Proxy 
 
-Your new Fresh project is ready to go. You can follow the Fresh "Getting
-Started" guide here: https://fresh.deno.dev/docs/getting-started
+This is a reverse proxy for Posthog that allows you to send your analytics data to your own domain without having to seupt a complicated environment. 
 
-### Usage
+It's a simple proxy that captures requests via Deno Fresh framework and forwards them to Posthog. 
 
-Make sure to install Deno: https://deno.land/manual/getting_started/installation
+## Implemented forwarding rules
 
-Then start the project:
-
-```
-deno task start
-```
-
-This will watch the project directory and restart as necessary.
+https://posthog.com/docs/advanced/proxy
