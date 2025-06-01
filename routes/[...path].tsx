@@ -17,7 +17,7 @@ const ASSETS_HOST = "eu-assets.i.posthog.com";
 export default async function proxy(req: Request, ctx: FreshContext) {
   const url = new URL(req.url);
   const path = ctx.params.path;
-  const origin = req.headers.get("Origin") || "*";
+  const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
   console.debug(`Got request from origin: ${origin}`, {
     headers: req.headers,
