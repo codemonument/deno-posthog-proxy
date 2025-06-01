@@ -58,5 +58,9 @@ export default async function proxy(req: Request, ctx: FreshContext) {
     headers: newResponseHeaders,
   });
 
+  console.debug(`Forwarded request to ${hostname}, got newResponse`, {
+    newResponse,
+  });
+
   return newResponse;
 }
