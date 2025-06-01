@@ -20,7 +20,7 @@ export default async function proxy(req: Request, ctx: FreshContext) {
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
   console.debug(`Got request from origin: ${origin}`, {
-    headers: req.headers,
+    req,
   });
 
   const hostname = path.startsWith("static") ? ASSETS_HOST : API_HOST;
