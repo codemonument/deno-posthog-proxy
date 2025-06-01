@@ -38,6 +38,9 @@ export default async function proxy(req: Request, ctx: FreshContext) {
     method: req.method,
     headers,
     body: req.body,
+    // @bjesuiter: set redirect mode to manual to avoid the case that THIS fresh server calls posthog without an "origin" header
+    // => let the browser handle the redirect
+    redirect: "manual",
   });
 
   const newResponseHeaders = new Headers(response.headers);
