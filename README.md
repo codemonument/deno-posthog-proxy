@@ -7,3 +7,4 @@ It's a simple proxy that captures requests via Deno Fresh framework and forwards
 ## Implemented forwarding rules
 
 https://posthog.com/docs/advanced/proxy
+
