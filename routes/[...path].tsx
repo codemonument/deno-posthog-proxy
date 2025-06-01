@@ -13,7 +13,9 @@ import { FreshContext } from "$fresh/server.ts";
  */
 export default async function proxy(req: Request, ctx: FreshContext) {
   const path = ctx.params.path;
+  const origin = req.headers.get("Origin") || "*";
 
+  // build the request to forward
   const forwardRequest = new Request(
     `https://eu.i.posthog.com/${path}`,
     {
@@ -22,7 +24,22 @@ export default async function proxy(req: Request, ctx: FreshContext) {
   );
   forwardRequest.headers.set("Host", "eu.i.posthog.com");
 
+  // forward the request to Posthog
   const response = await fetch(forwardRequest);
+
+  // adjust CORS headers in response
+  const headers = response.headers;
+
+  headers.set("Access-Control-Allow-Origin", origin);
+  headers.set("Access-Control-Allow-Credentials", "true");
+  headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With",
+  );
+  headers.set(
+    "Access-Control-Allow-Methods",
+    "POST, OPTIONS, GET, PUT, DELETE",
+  );
 
   return response;
 }
