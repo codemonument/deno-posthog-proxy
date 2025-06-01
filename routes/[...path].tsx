@@ -19,7 +19,9 @@ export default async function proxy(req: Request, ctx: FreshContext) {
   const path = ctx.params.path;
   const origin = req.headers.get("Origin") || "*";
 
-  console.debug(`Got request from origin: `, origin);
+  console.debug(`Got request from origin: ${origin}`, {
+    headers: req.headers,
+  });
 
   const hostname = path.startsWith("static") ? ASSETS_HOST : API_HOST;
   const newUrl = new URL(url);
