@@ -36,16 +36,23 @@ export default async function proxy(req: Request, ctx: FreshContext) {
     body: req.body,
   });
 
-  response.headers.set("Access-Control-Allow-Origin", origin);
-  response.headers.set("Access-Control-Allow-Credentials", "true");
-  response.headers.set(
+  const newResponseHeaders = new Headers(response.headers);
+  newResponseHeaders.set("Access-Control-Allow-Origin", origin);
+  newResponseHeaders.set("Access-Control-Allow-Credentials", "true");
+  newResponseHeaders.set(
     "Access-Control-Allow-Headers",
     "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With",
   );
-  headers.set(
+  newResponseHeaders.set(
     "Access-Control-Allow-Methods",
     "POST, OPTIONS, GET, PUT, DELETE",
   );
 
-  return response;
+  const newResponse = new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newResponseHeaders,
+  });
+
+  return newResponse;
 }
