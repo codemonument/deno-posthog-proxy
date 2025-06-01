@@ -1,9 +1,12 @@
 // Forwards:
-// route: e.yourdomain.com/*
-// reverse_proxy: https://eu.i.posthog.com/*
-// host_header: eu.i.posthog.com
+// route: e.yourdomain.com/* and e.yourdomain.com/static/*
+// reverse_proxy: https://eu.i.posthog.com/* and https://eu-assets.i.posthog.com/*
+// host_header: eu.i.posthog.com and eu-assets.i.posthog.com
 
 import { FreshContext } from "$fresh/server.ts";
+
+const API_HOST = "eu.i.posthog.com";
+const ASSETS_HOST = "eu-assets.i.posthog.com";
 
 /**
  * Note: Syntactically, this is an async fresh component handler.
@@ -12,27 +15,30 @@ import { FreshContext } from "$fresh/server.ts";
  * Handler route syntax: https://fresh.deno.dev/docs/concepts/routes#-handler-route
  */
 export default async function proxy(req: Request, ctx: FreshContext) {
+  const url = new URL(req.url);
   const path = ctx.params.path;
   const origin = req.headers.get("Origin") || "*";
 
-  // build the request to forward
-  const forwardRequest = new Request(
-    `https://eu.i.posthog.com/${path}`,
-    {
-      ...req,
-    },
-  );
-  forwardRequest.headers.set("Host", "eu.i.posthog.com");
+  const hostname = path.startsWith("static") ? ASSETS_HOST : API_HOST;
+  const newUrl = new URL(url);
+  newUrl.protocol = "https";
+  newUrl.hostname = hostname;
+  newUrl.port = "443";
+  newUrl.pathname = path;
+
+  const headers = new Headers(req.headers);
+  headers.set("Host", hostname);
 
   // forward the request to Posthog
-  const response = await fetch(forwardRequest);
+  const response = await fetch(newUrl, {
+    method: req.method,
+    headers,
+    body: req.body,
+  });
 
-  // adjust CORS headers in response
-  const headers = response.headers;
-
-  headers.set("Access-Control-Allow-Origin", origin);
-  headers.set("Access-Control-Allow-Credentials", "true");
-  headers.set(
+  response.headers.set("Access-Control-Allow-Origin", origin);
+  response.headers.set("Access-Control-Allow-Credentials", "true");
+  response.headers.set(
     "Access-Control-Allow-Headers",
     "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With",
   );
