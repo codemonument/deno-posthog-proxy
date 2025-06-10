@@ -1,13 +1,11 @@
 import { proxy } from "./src/proxy-req-to-posthog.ts";
 
-Deno.serve((req, info) => {
+Deno.serve((req, _info) => {
   const urlString = req.url;
   const url = new URL(urlString);
   const path = url.pathname;
 
-  console.info(`Received request`, {
-    denoServeInfo: JSON.stringify(info, null, 2),
-    url: urlString,
+  console.info(`Received request to "${urlString}" with`, {
     path,
     origin: req.headers.get("Origin") ?? req.headers.get("origin") ??
       "not defined",

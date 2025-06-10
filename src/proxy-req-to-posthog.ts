@@ -15,15 +15,14 @@ export async function proxy(req: Request) {
     path === workingPath
   );
 
-  console.info(`Request on proxy handler`, {
-    url: url.href,
-    path,
-    origin: origin === "*" ? "unknown" : origin,
-    isWorkingPath,
-  });
+  if (isWorkingPath) {
+    console.debug(
+      `Request for ${req.url} is known to work, skipping debug logs`,
+    );
+  }
 
   if (!isWorkingPath) {
-    console.debug(`Got unknown-working REQUEST from origin: ${origin}`, {
+    console.debug(`Got unverified proxy request from origin: ${origin}`, {
       req,
     });
   }
@@ -67,7 +66,10 @@ export async function proxy(req: Request) {
   });
 
   console.debug(
-    `Forwarded request to "${hostname}/${path}", got newResponse`,
+    `Forwarded request 
+     from "${origin}" 
+     for "${url.href}" 
+     to "${hostname}/${path}", got newResponse`,
     {
       newResponse,
     },
