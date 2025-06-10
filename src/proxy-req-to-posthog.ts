@@ -2,8 +2,8 @@ const API_HOST = "eu.i.posthog.com";
 const ASSETS_HOST = "eu-assets.i.posthog.com";
 
 const workingPaths = [
-  "static/array.js",
-  "array/phc_Q4RDyPoaIdeiEVIXMoBXZXUSjMQd5TQWlABIFGwS5YY/config.js",
+  "/static/array.js",
+  "/array/phc_Q4RDyPoaIdeiEVIXMoBXZXUSjMQd5TQWlABIFGwS5YY/config.js",
 ];
 
 export async function proxy(req: Request) {
