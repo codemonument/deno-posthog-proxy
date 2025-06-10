@@ -20,7 +20,7 @@ export async function handler(req: Request, ctx: FreshContext) {
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
   console.info(`Request on proxy handler`, {
-    url,
+    url: url.href,
     path,
     origin: origin === "*" ? "unknown" : origin,
   });
