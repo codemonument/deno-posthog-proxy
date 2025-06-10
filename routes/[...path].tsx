@@ -19,7 +19,13 @@ export async function handler(req: Request, ctx: FreshContext) {
   const path = ctx.params.path;
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
-  console.debug(`Got request from origin: ${origin}`, {
+  console.info(`Request on proxy handler`, {
+    url,
+    path,
+    origin: origin === "*" ? "unknown" : origin,
+  });
+
+  console.debug(`Got REQUEST from origin: ${origin}`, {
     req,
   });
 
