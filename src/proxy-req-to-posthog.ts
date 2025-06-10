@@ -44,7 +44,7 @@ export async function proxy(req: Request) {
     body: req.body,
     // @bjesuiter: set redirect mode to manual to avoid the case that THIS fresh server calls posthog without an "origin" header
     // => let the browser handle the redirect
-    redirect: "manual",
+    // redirect: "manual",
   });
 
   const newResponseHeaders = new Headers(response.headers);
@@ -69,7 +69,7 @@ export async function proxy(req: Request) {
     `Forwarded request 
      from "${origin}" 
      for "${url.href}" 
-     to "${hostname}/${path}", got newResponse`,
+     to "${newUrl.href}", got newResponse`,
     {
       newResponse,
     },
