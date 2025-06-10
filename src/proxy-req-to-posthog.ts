@@ -60,18 +60,16 @@ export async function proxy(req: Request) {
   });
 
   if (isWorkingPath) {
-    console.info(`Forwarded request 
+    console.info(`Forwarded request to "${newUrl.href}"
       from "${origin}" 
       for "${url.href}" 
-      to "${newUrl.href}"
       got ${response.status} ${response.statusText}
       `);
   } else {
     console.debug(
-      `Forwarded request 
+      `Forwarded request to "${newUrl.href}"
        from "${origin}" 
-       for "${url.href}" 
-       to "${newUrl.href}", got`,
+       for "${url.href}", got`,
       {
         newResponse,
       },
