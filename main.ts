@@ -6,7 +6,7 @@ Deno.serve((req, info) => {
   const path = url.pathname;
 
   console.info(`Received request`, {
-    denoServeInfo: info,
+    denoServeInfo: JSON.stringify(info, null, 2),
     url: urlString,
     path,
     origin: req.headers.get("Origin") ?? req.headers.get("origin") ??
