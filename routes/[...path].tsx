@@ -8,6 +8,11 @@ import { FreshContext } from "$fresh/server.ts";
 const API_HOST = "eu.i.posthog.com";
 const ASSETS_HOST = "eu-assets.i.posthog.com";
 
+const workingPaths = [
+  "static/array.js",
+  "array/phc_Q4RDyPoaIdeiEVIXMoBXZXUSjMQd5TQWlABIFGwS5YY/config.js",
+];
+
 /**
  * Handles all incomming requests to that route.
  * @param req the fetch compatible request object
@@ -19,15 +24,22 @@ export async function handler(req: Request, ctx: FreshContext) {
   const path = ctx.params.path;
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
+  const isWorkingPath = workingPaths.some((workingPath) =>
+    path.startsWith(workingPath)
+  );
+
   console.info(`Request on proxy handler`, {
     url: url.href,
     path,
     origin: origin === "*" ? "unknown" : origin,
+    isWorkingPath,
   });
 
-  console.debug(`Got REQUEST from origin: ${origin}`, {
-    req,
-  });
+  if (!isWorkingPath) {
+    console.debug(`Got unknown-working REQUEST from origin: ${origin}`, {
+      req,
+    });
+  }
 
   const hostname = path.startsWith("static") ? ASSETS_HOST : API_HOST;
   const newUrl = new URL(url);
@@ -67,9 +79,12 @@ export async function handler(req: Request, ctx: FreshContext) {
     headers: newResponseHeaders,
   });
 
-  console.debug(`Forwarded request to ${hostname}, got newResponse`, {
-    newResponse,
-  });
+  console.debug(
+    `Forwarded request for "${path}" to "${hostname}", got newResponse`,
+    {
+      newResponse,
+    },
+  );
 
   return newResponse;
 }
