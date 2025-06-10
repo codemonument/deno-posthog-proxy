@@ -65,15 +65,24 @@ export async function proxy(req: Request) {
     headers: newResponseHeaders,
   });
 
-  console.debug(
-    `Forwarded request 
-     from "${origin}" 
-     for "${url.href}" 
-     to "${newUrl.href}", got newResponse`,
-    {
-      newResponse,
-    },
-  );
+  if (isWorkingPath) {
+    console.info(`Forwarded request 
+      from "${origin}" 
+      for "${url.href}" 
+      to "${newUrl.href}"
+      got ${response.status} ${response.statusText}
+      `);
+  } else {
+    console.debug(
+      `Forwarded request 
+       from "${origin}" 
+       for "${url.href}" 
+       to "${newUrl.href}", got`,
+      {
+        newResponse,
+      },
+    );
+  }
 
   return newResponse;
 }
