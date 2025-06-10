@@ -1,13 +1,23 @@
-/// <reference no-default-lib="true" />
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-/// <reference lib="dom.asynciterable" />
-/// <reference lib="deno.ns" />
+Deno.serve((req) => {
+  const urlString = req.url;
+  const url = new URL(urlString);
+  const path = url.pathname;
 
-import "$std/dotenv/load.ts";
+  console.info(`Received request`, {
+    url: urlString,
+    path,
+    origin: req.headers.get("Origin") ?? req.headers.get("origin") ??
+      "not defined",
+  });
 
-import { start } from "$fresh/server.ts";
-import manifest from "./fresh.gen.ts";
-import config from "./fresh.config.ts";
+  switch (path) {
+    case "/health":
+      return new Response("OK at" + new Date().toISOString(), { status: 200 });
+    case "/ping":
+      return new Response("PONG at " + new Date().toISOString(), {
+        status: 200,
+      });
+  }
 
-await start(manifest, config);
+  return new Response("Hello, world!");
+});
