@@ -46,7 +46,7 @@ export async function proxy(req: Request) {
   newResponseHeaders.set("Access-Control-Allow-Credentials", "true");
   newResponseHeaders.set(
     "Access-Control-Allow-Headers",
-    "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With",
+    "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, x-csrftoken",
   );
   newResponseHeaders.set(
     "Access-Control-Allow-Methods",
