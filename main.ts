@@ -1,3 +1,5 @@
+import { proxy } from "./src/proxy-req-to-posthog.ts";
+
 Deno.serve((req) => {
   const urlString = req.url;
   const url = new URL(urlString);
@@ -17,7 +19,7 @@ Deno.serve((req) => {
       return new Response("PONG at " + new Date().toISOString(), {
         status: 200,
       });
+    default:
+      return proxy(req);
   }
-
-  return new Response("Hello, world!");
 });
