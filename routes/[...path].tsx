@@ -9,12 +9,12 @@ const API_HOST = "eu.i.posthog.com";
 const ASSETS_HOST = "eu-assets.i.posthog.com";
 
 /**
- * Note: Syntactically, this is an async fresh component handler.
- * But since Component handlers (which usually return JSX) can bail out of rendering by returning a Response object instead,
- * they can also be used as simple API route handlers, without using the more complex
+ * Handles all incomming requests to that route.
+ * @param req the fetch compatible request object
+ * @param ctx the fresh context object
  * Handler route syntax: https://fresh.deno.dev/docs/concepts/routes#-handler-route
  */
-export default async function proxy(req: Request, ctx: FreshContext) {
+export async function handler(req: Request, ctx: FreshContext) {
   const url = new URL(req.url);
   const path = ctx.params.path;
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
