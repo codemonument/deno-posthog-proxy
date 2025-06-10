@@ -5,11 +5,12 @@ Deno.serve((req, _info) => {
   const url = new URL(urlString);
   const path = url.pathname;
 
-  console.info(`Received request to "${urlString}" with`, {
-    path,
-    origin: req.headers.get("Origin") ?? req.headers.get("origin") ??
-      "not defined",
-  });
+  console.info(`[CatchAll] Received request to "${urlString}" 
+    with path: "${path}" 
+    from origin: "${
+    req.headers.get("Origin") ?? req.headers.get("origin") ??
+      "not defined"
+  }"`);
 
   switch (path) {
     case "/health":

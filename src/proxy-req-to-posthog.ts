@@ -15,12 +15,6 @@ export async function proxy(req: Request) {
     path === workingPath
   );
 
-  if (isWorkingPath) {
-    console.debug(
-      `Request for ${req.url} is known to work, skipping debug logs`,
-    );
-  }
-
   if (!isWorkingPath) {
     console.debug(`Got unverified proxy request from origin: ${origin}`, {
       req,
