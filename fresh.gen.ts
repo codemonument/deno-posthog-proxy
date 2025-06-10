@@ -3,14 +3,18 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $_path_ from "./routes/[...path].tsx";
-import * as $static_path_ from "./routes/static/[...path].tsx";
+import * as $_middleware from "./routes/_middleware.ts";
+import * as $health from "./routes/health.tsx";
+import * as $ping from "./routes/ping.tsx";
 
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
     "./routes/[...path].tsx": $_path_,
-    "./routes/static/[...path].tsx": $static_path_,
+    "./routes/_middleware.ts": $_middleware,
+    "./routes/health.tsx": $health,
+    "./routes/ping.tsx": $ping,
   },
   islands: {},
   baseUrl: import.meta.url,
