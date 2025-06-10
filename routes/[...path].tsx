@@ -25,7 +25,7 @@ export async function handler(req: Request, ctx: FreshContext) {
   const origin = req.headers.get("Origin") ?? req.headers.get("origin") ?? "*";
 
   const isWorkingPath = workingPaths.some((workingPath) =>
-    path.startsWith(workingPath)
+    path === workingPath
   );
 
   console.info(`Request on proxy handler`, {
@@ -80,7 +80,7 @@ export async function handler(req: Request, ctx: FreshContext) {
   });
 
   console.debug(
-    `Forwarded request for "${path}" to "${hostname}", got newResponse`,
+    `Forwarded request to "${hostname}/${path}", got newResponse`,
     {
       newResponse,
     },
